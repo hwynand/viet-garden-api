@@ -5,7 +5,7 @@ from apis.deps import get_db, get_current_user, get_current_admin, get_common_qu
 import crud
 import schemas
 
-router = APIRouter(prefix="/category-groups")
+router = APIRouter(prefix="/category-groups", tags=["category"])
 
 
 @router.get("/", response_model=list[schemas.CategoryGroup])

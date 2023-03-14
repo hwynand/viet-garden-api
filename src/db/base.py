@@ -4,3 +4,4 @@
 from db.base_model import Base
 from models.user import User
 from models.category import Category, CategoryGroup
+from models.product import Product, ProductImage

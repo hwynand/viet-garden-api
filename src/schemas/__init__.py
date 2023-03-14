@@ -6,4 +6,5 @@ from schemas.category import (
     CategoryGroupUpdate,
     CategoryUpdate,
 )
+from schemas.product import ProductCreate, ProductUpdate, Product, ProductImageBase
 from schemas.user import User, UserCreate, UserUpdate
