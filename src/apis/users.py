@@ -29,12 +29,10 @@ async def update_user_me(
     *,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
-    firstname: str = Body(None),
-    lastname: str = Body(None),
+    fullname: str = Body(None),
     email: EmailStr = Body(None),
     phone_number: str = Body(None),
     address: str = Body(None),
-    gender: int = Body(None),
     password: str = Body(None),
 ):
     user = crud.user.get_by_email(db, email=email)
@@ -46,7 +44,7 @@ async def update_user_me(
             detail="Mật khẩu phải có ít nhất 8 kí tự, bao gồm 1 chữ hoa, 1 chữ thường, 1 chữ số, 1 kí tự đặc biệt",
         )
     user_in = schemas.UserUpdate(
-        fullname=firstname,
+        fullname=fullname,
         email=email,
         phone_number=phone_number,
         address=address,
