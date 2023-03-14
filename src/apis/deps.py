@@ -8,7 +8,7 @@ from core.config import settings
 from db.session import DBSession
 from models.user import User
 
-oauth_schema = OAuth2PasswordBearer(tokenUrl="/api/login/access-token")
+oauth_schema = OAuth2PasswordBearer(tokenUrl="/viet-garden/api/login/access-token")
 
 
 async def get_db():

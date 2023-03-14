@@ -10,6 +10,7 @@ app = FastAPI(
         "name": "Huong Pham",
         "github": "https://github.com/huongpx",
     },
+    root_path="/viet-garden",
 )
 
 origins = ["*"]
