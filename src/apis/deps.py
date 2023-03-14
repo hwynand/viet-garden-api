@@ -19,6 +19,10 @@ async def get_db():
         db.close()
 
 
+async def get_common_queries(keyword: str | None = None, skip: int = 0, limit: int = 0):
+    return {"keyword": keyword, "skip": skip, "limit": limit}
+
+
 async def get_current_user(
     db: Session = Depends(get_db), token: str = Depends(oauth_schema)
 ) -> User:
