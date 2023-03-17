@@ -35,6 +35,10 @@ async def update_user_me(
     address: str = Body(None),
     password: str = Body(None),
 ):
+    if current_user.is_admin:
+        raise HTTPException(
+            status_code=400, detail="Không thể thay đổi thông tin admin"
+        )
     user = crud.user.get_by_email(db, email=email)
     if user and user.id != current_user.id:
         raise HTTPException(status_code=400, detail="Email đã tồn tại")
