@@ -1,8 +1,9 @@
 from fastapi import APIRouter
 
-from apis import login, users, categories, products
+from apis import carts, categories, login, products, users
 
 api_router = APIRouter()
+api_router.include_router(carts.router)
 api_router.include_router(users.router)
 api_router.include_router(login.router)
 api_router.include_router(categories.router)

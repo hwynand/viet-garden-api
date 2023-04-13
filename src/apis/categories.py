@@ -8,7 +8,11 @@ import schemas
 router = APIRouter(prefix="/category-groups", tags=["category"])
 
 
-@router.get("/", response_model=list[schemas.CategoryGroup])
+@router.get(
+    "/",
+    response_model=list[schemas.CategoryGroup],
+    summary="Lấy danh sách các nhóm ngành hàng, VD: nhóm cây cảnh, chậu cảnh, ...",
+)
 async def read_category_groups(
     *, db: Session = Depends(get_db), commons: dict = Depends(get_common_queries)
 ):
@@ -17,7 +21,10 @@ async def read_category_groups(
 
 
 @router.post(
-    "/", response_model=schemas.CategoryGroup, dependencies=[Depends(get_current_admin)]
+    "/",
+    response_model=schemas.CategoryGroup,
+    dependencies=[Depends(get_current_admin)],
+    summary="Tạo nhóm ngành hàng mới",
 )
 async def create_category_group(
     *, db: Session = Depends(get_db), group_in: schemas.CategoryGroupCreate
@@ -30,6 +37,7 @@ async def create_category_group(
     "/{group_id}",
     response_model=schemas.CategoryGroup,
     dependencies=[Depends(get_current_admin)],
+    summary="Sửa nhóm ngành hàng",
 )
 async def update_category_group(
     *,
@@ -51,6 +59,7 @@ async def update_category_group(
     "/{group_id}",
     response_model=schemas.CategoryGroup,
     dependencies=[Depends(get_current_admin)],
+    summary="Xóa nhóm ngành hàng",
 )
 async def delete_category_group(*, db: Session = Depends(get_db), group_id: int):
     db_group = crud.category_group.get(db=db, id=group_id)
@@ -67,6 +76,7 @@ async def delete_category_group(*, db: Session = Depends(get_db), group_id: int)
     "/categories",
     response_model=schemas.Category,
     dependencies=[Depends(get_current_admin)],
+    summary="Thêm ngành hàng",
 )
 async def create_category(
     *, db: Session = Depends(get_db), category_in: schemas.CategoryCreate
@@ -79,6 +89,7 @@ async def create_category(
     "/categories/{category_id}",
     response_model=schemas.Category,
     dependencies=[Depends(get_current_admin)],
+    summary="Sửa ngành hàng",
 )
 async def update_category(
     *,
@@ -100,6 +111,7 @@ async def update_category(
     "/categories/{category_id}",
     response_model=schemas.Category,
     dependencies=[Depends(get_current_admin)],
+    summary="Xóa ngành hàng",
 )
 async def delete_category(*, db: Session = Depends(get_db), category_id: int):
     db_category = crud.category.get(db=db, id=category_id)
