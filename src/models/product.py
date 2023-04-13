@@ -7,6 +7,7 @@ from db.base_model import Base
 
 if TYPE_CHECKING:
     from models.category import Category
+    from models.cart import CartProduct
 
 
 class Product(Base):
@@ -19,7 +20,10 @@ class Product(Base):
 
     category: Mapped["Category"] = relationship(back_populates="products")
     product_images: Mapped[list["ProductImage"]] = relationship(
-        back_populates="product"
+        back_populates="product", cascade="all, delete-orphan"
+    )
+    cart_products: Mapped[list["CartProduct"]] = relationship(
+        back_populates="product", cascade="all, delete-orphan"
     )
 
 
