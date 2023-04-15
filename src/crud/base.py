@@ -2,7 +2,7 @@ from typing import Any, Generic, Sequence, Type, TypeVar
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
-from sqlalchemy import select
+from sqlalchemy import select, Select
 from sqlalchemy.orm import Session
 
 from db.base_model import Base
@@ -22,9 +22,9 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
     def get_multi(
         self, db: Session, skip: int = 0, limit: int = 10
-    ) -> Sequence[ModelType]:
-        items = db.scalars(select(self.model).offset(skip).limit(limit)).all()
-        return items
+    ) -> Select[tuple[ModelType]]:
+        query = select(self.model).offset(skip).limit(limit)
+        return query
 
     def create(self, db: Session, obj_in: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(obj_in)

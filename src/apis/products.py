@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 import crud
 import schemas
 from apis.deps import get_current_admin, get_db
-from core.pagination import PageParams, paginate
+from core.pagination import PageParams, paginate, PagedResponseSchema
 from utils.constants import IMAGE_TYPES_ALLOWED
 
 router = APIRouter(
@@ -43,7 +43,7 @@ async def upload_file(*, file: UploadFile = File(...), request: Request):
     return request.url._url.rstrip(request.url.path) + "/files/" + image_fn
 
 
-@router.get("/")
+@router.get("/", response_model=PagedResponseSchema[schemas.Product])
 async def read_products(
     *,
     db: Session = Depends(get_db),

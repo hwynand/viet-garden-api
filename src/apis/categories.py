@@ -1,23 +1,27 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from apis.deps import get_db, get_current_user, get_current_admin, get_common_queries
 import crud
 import schemas
+from apis.deps import get_common_queries, get_current_admin, get_current_user, get_db
+from core.pagination import PageParams, paginate, PagedResponseSchema
 
 router = APIRouter(prefix="/category-groups", tags=["category"])
 
 
 @router.get(
     "/",
-    response_model=list[schemas.CategoryGroup],
+    response_model=PagedResponseSchema[schemas.CategoryGroup],
     summary="Lấy danh sách các nhóm ngành hàng, VD: nhóm cây cảnh, chậu cảnh, ...",
 )
 async def read_category_groups(
-    *, db: Session = Depends(get_db), commons: dict = Depends(get_common_queries)
+    *,
+    db: Session = Depends(get_db),
+    keyword: str | None = None,
+    page_params: PageParams = Depends()
 ):
-    category_groups = crud.category_group.get_multi(db=db)
-    return category_groups
+    query = crud.category_group.get_multi(db=db)
+    return paginate(db, query, page_params, schemas.CategoryGroup)
 
 
 @router.post(

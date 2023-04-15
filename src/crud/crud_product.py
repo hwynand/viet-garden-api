@@ -6,7 +6,6 @@ from sqlalchemy.orm import Session
 from crud.base import CRUDBase
 from models.product import Product, ProductImage, Product
 from schemas import ProductCreate, ProductUpdate, ProductImageBase
-from core.pagination import PageParams
 
 
 class CRUDProduct(CRUDBase[Product, ProductCreate, ProductUpdate]):
