@@ -4,5 +4,6 @@
 from db.base_model import Base
 from models.cart import CartProduct
 from models.category import Category, CategoryGroup
+from models.order import Order, OrderProduct
 from models.product import Product, ProductImage
 from models.user import User

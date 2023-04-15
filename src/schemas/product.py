@@ -4,7 +4,6 @@ from schemas.category import Category
 
 
 class ProductImageBase(BaseModel):
-    id: int | None
     image_path: AnyHttpUrl
 
 
@@ -47,7 +46,7 @@ class Product(BaseModel):
     inventory: int
     summary: str
     detail: str
-    product_images: list["ProductImageBase"]
+    product_images: list["ProductImage"]
 
     class Config:
         orm_mode = True

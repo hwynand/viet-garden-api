@@ -9,4 +9,6 @@ from core.config import settings
 from db import base
 
 engine = create_engine(settings.SQLALCHEMY_DATABASE_URI, pool_pre_ping=True)
-DBSession = Session(bind=engine, autoflush=False, autocommit=False)
+DBSession = Session(
+    bind=engine, autoflush=False, autocommit=False, expire_on_commit=False
+)
