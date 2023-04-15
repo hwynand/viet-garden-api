@@ -1,3 +1,4 @@
+from schemas.cart import CartProduct, CartProductCreate, CartProductUpdate
 from schemas.category import (
     Category,
     CategoryCreate,
@@ -6,5 +7,5 @@ from schemas.category import (
     CategoryGroupUpdate,
     CategoryUpdate,
 )
-from schemas.product import ProductCreate, ProductUpdate, Product, ProductImageBase
+from schemas.product import Product, ProductCreate, ProductImageBase, ProductUpdate
 from schemas.user import User, UserCreate, UserUpdate
