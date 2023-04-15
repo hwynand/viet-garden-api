@@ -4,18 +4,18 @@ import string
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from apis.deps import get_db, get_current_user, get_current_admin
+import crud
+import schemas
+from apis.deps import get_current_admin, get_current_user, get_db
+from core.pagination import PagedResponseSchema, PageParams, paginate
 from models.order import Order, OrderProduct
 from models.user import User
-import schemas
-import crud
-
 
 router = APIRouter(prefix="/orders", tags=["orders"])
 
 
 @router.get(
-    "/me", response_model=list[schemas.Order], description="Lấy tất cả order của user"
+    "/me", response_model=list[schemas.Order], summary="Lấy tất cả order của user"
 )
 async def read_orders_me(
     *, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
@@ -26,24 +26,23 @@ async def read_orders_me(
 
 @router.get(
     "/",
-    response_model=list[schemas.Order],
+    response_model=PagedResponseSchema[schemas.OrderAdmin],
     dependencies=[Depends(get_current_admin)],
-    description="Admin lấy tất cả order",
+    summary="Admin lấy tất cả order",
 )
 async def read_orders(
     *,
     db: Session = Depends(get_db),
-    skip: int = 0,
-    limit: int = 10,
+    page_params: PageParams = Depends(),
 ):
-    orders = crud.order.get_multi(db=db, skip=skip, limit=limit)
-    return orders
+    query = crud.order.get_multi(db=db)
+    return paginate(db, query, page_params, schemas.OrderAdmin)
 
 
 @router.post(
     "/me",
     response_model=schemas.Order,
-    description="User sau khi đăng nhập tạo order mới",
+    summary="User sau khi đăng nhập tạo order mới",
 )
 async def create_order(
     *,
@@ -77,7 +76,7 @@ async def create_order(
     "/{order_id}",
     response_model=schemas.Order,
     dependencies=[Depends(get_current_user)],
-    description="Xem chi tiết order",
+    summary="Xem chi tiết order",
 )
 async def read_order(*, db: Session = Depends(get_db), order_id: int):
     """

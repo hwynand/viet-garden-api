@@ -44,11 +44,11 @@ class OrderUpdate(BaseModel):
 
 class Order(OrderBase):
     id: int
-    order_items: list["OrderProductBase"]
+    order_products: list["OrderProduct"]
 
     class Config:
         orm_mode = True
 
 
-class OrderAdmin(OrderBase):
+class OrderAdmin(Order):
     user: User

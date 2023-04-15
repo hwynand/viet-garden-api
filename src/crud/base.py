@@ -20,10 +20,8 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         item = db.scalar(select(self.model).where(self.model.id == id))
         return item
 
-    def get_multi(
-        self, db: Session, skip: int = 0, limit: int = 10
-    ) -> Select[tuple[ModelType]]:
-        query = select(self.model).offset(skip).limit(limit)
+    def get_multi(self, db: Session) -> Select[tuple[ModelType]]:
+        query = select(self.model)
         return query
 
     def create(self, db: Session, obj_in: CreateSchemaType) -> ModelType:
