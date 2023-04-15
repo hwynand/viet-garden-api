@@ -1,3 +1,4 @@
+from schemas.article import Article, ArticleCreate, ArticleUpdate
 from schemas.cart import CartProduct, CartProductCreate, CartProductUpdate
 from schemas.category import (
     Category,

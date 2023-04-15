@@ -1,3 +1,4 @@
+from .crud_article import article
 from .crud_cart import cart_product
 from .crud_category import category, category_group
 from .crud_order import order
