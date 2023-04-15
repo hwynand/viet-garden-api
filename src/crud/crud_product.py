@@ -1,6 +1,6 @@
 from typing import Any, Sequence
 
-from sqlalchemy import select
+from sqlalchemy import select, Select
 from sqlalchemy.orm import Session
 
 from crud.base import CRUDBase
@@ -11,20 +11,15 @@ from schemas import ProductCreate, ProductUpdate, ProductImageBase
 class CRUDProduct(CRUDBase[Product, ProductCreate, ProductUpdate]):
     def get_multi_filter(
         self,
-        db: Session,
         category_id: int | None = None,
         keyword: str | None = None,
-        skip: int = 0,
-        limit: int = 10,
-    ) -> Sequence[Product]:
+    ) -> Select[tuple[Product]]:
         stmt = select(Product)
         if category_id:
             stmt = stmt.where(Product.category_id == category_id)
         if keyword:
             stmt = stmt.where(Product.name.icontains(keyword))
-        stmt = stmt.offset(skip).limit(limit)
-        products = db.scalars(stmt).all()
-        return products
+        return stmt
 
     def create(self, db: Session, product_in: ProductCreate) -> Product:
         product = Product(
