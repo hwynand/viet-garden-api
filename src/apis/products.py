@@ -59,6 +59,7 @@ async def read_products(
     "/",
     summary="Tạo sản phẩm",
     dependencies=[Depends(get_current_admin)],
+    response_model=schemas.Product,
 )
 async def create_product(
     *, db: Session = Depends(get_db), product_in: schemas.ProductCreate
@@ -67,7 +68,11 @@ async def create_product(
     return product
 
 
-@router.put("/{product_id}", response_model=schemas.Product)
+@router.put(
+    "/{product_id}",
+    response_model=schemas.Product,
+    dependencies=[Depends(get_current_admin)],
+)
 async def update_product(
     *, db: Session = Depends(get_db), product_id: int, product_in: schemas.ProductUpdate
 ):
@@ -81,7 +86,11 @@ async def update_product(
     return product
 
 
-@router.delete("/product_id", response_model=schemas.Product)
+@router.delete(
+    "/product_id/{product_id}",
+    response_model=schemas.Product,
+    dependencies=[Depends(get_current_admin)],
+)
 async def delete_product(*, db: Session = Depends(get_db), product_id: int):
     db_product = crud.product.get(db=db, id=product_id)
     if not db_product:
