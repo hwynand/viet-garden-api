@@ -7,6 +7,7 @@ from db.base_model import Base
 
 if typing.TYPE_CHECKING:
     from models.cart import ShoppingSession
+    from models.order import Order
 
 
 class User(Base):
@@ -18,3 +19,6 @@ class User(Base):
     is_admin: Mapped[bool] = mapped_column(default=False)
 
     shopping_session: Mapped["ShoppingSession"] = relationship(back_populates="user")
+    orders: Mapped[list["Order"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
