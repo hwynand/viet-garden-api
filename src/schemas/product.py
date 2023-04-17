@@ -7,6 +7,9 @@ class ProductImageBase(BaseModel):
     image_path: AnyHttpUrl
 
 
+class ProductImageUpdate(ProductImageBase):
+    id: int | None = None
+
 class ProductImage(ProductImageBase):
     id: int
 
