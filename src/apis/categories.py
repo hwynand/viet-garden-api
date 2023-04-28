@@ -76,6 +76,11 @@ async def delete_category_group(*, db: Session = Depends(get_db), group_id: int)
     return group
 
 
+@router.get('/categories', response_model=PagedResponseSchema[schemas.Category], summary='danh sach category')
+async def read_categories(*, db: Session = Depends(get_db), page_params: PageParams = Depends()):
+    query = crud.category.get_multi(db=db)
+    return paginate(db, query, page_params, schemas.Category)
+
 @router.post(
     "/categories",
     response_model=schemas.Category,
