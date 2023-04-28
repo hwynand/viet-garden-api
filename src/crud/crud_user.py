@@ -1,7 +1,7 @@
 from typing import Any
 
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy import select
+from sqlalchemy import select, Select
 from sqlalchemy.orm import Session
 from pydantic import EmailStr
 
@@ -12,6 +12,15 @@ from schemas import UserCreate, UserUpdate
 
 
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
+    def get_multi_filter(
+        self,
+        keyword: str | None = None,
+    ) -> Select[tuple[User]]:
+        stmt = select(User)
+        if keyword:
+            stmt = stmt.where(User.fullname.icontains(keyword))
+        return stmt
+    
     def get_by_email(self, db: Session, email: str) -> User | None:
         stmt = select(User).where(User.email == email)
         user = db.scalar(stmt)
