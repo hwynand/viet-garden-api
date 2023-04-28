@@ -1,7 +1,7 @@
 import os
 import secrets
 
-from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile, status
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from PIL import Image
 from sqlalchemy.orm import Session
 
@@ -9,6 +9,7 @@ import crud
 import schemas
 from apis.deps import get_current_admin, get_db
 from core.pagination import PageParams, paginate, PagedResponseSchema
+from core.config import settings
 from utils.constants import IMAGE_TYPES_ALLOWED
 
 router = APIRouter(
@@ -23,7 +24,7 @@ router = APIRouter(
     summary="Upload ảnh sản phẩm",
     dependencies=[Depends(get_current_admin)],
 )
-async def upload_file(*, file: UploadFile = File(...), request: Request):
+async def upload_file(file: UploadFile = File(...)):
     if not file.content_type in IMAGE_TYPES_ALLOWED:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -40,7 +41,7 @@ async def upload_file(*, file: UploadFile = File(...), request: Request):
     img.save(to_save_path)
     img.close()
 
-    return request.url._url.rstrip(request.url.path) + "/files/" + image_fn
+    return settings.HOST_URL + "/files/" + image_fn
 
 
 @router.get("/", response_model=PagedResponseSchema[schemas.Product])
