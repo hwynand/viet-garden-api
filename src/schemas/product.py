@@ -6,6 +6,11 @@ from schemas.category import Category
 class ProductImageBase(BaseModel):
     image_path: AnyHttpUrl
 
+class ProductImageCreate(ProductImageBase):
+    pass
+
+class ProductImageUpdate(ProductImageBase):
+    id: int | None = None
 
 class ProductImage(ProductImageBase):
     id: int
@@ -21,7 +26,6 @@ class ProductBase(BaseModel):
     inventory: int | None
     summary: str | None
     detail: str | None
-    product_images: list["ProductImageBase"] = []
 
 
 class ProductCreate(ProductBase):
@@ -31,11 +35,11 @@ class ProductCreate(ProductBase):
     inventory: int
     summary: str
     detail: str
-    product_images: list["ProductImageBase"]
+    product_images: list["ProductImageCreate"]
 
 
 class ProductUpdate(ProductBase):
-    pass
+    product_images: list["ProductImageUpdate"]
 
 
 class Product(BaseModel):

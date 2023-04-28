@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from crud.base import CRUDBase
 from models.product import Product, ProductImage, Product
-from schemas import ProductCreate, ProductUpdate, ProductImageBase
+from schemas import ProductCreate, ProductUpdate, ProductImageBase, ProductImageUpdate
 
 
 class CRUDProduct(CRUDBase[Product, ProductCreate, ProductUpdate]):
@@ -47,7 +47,7 @@ class CRUDProduct(CRUDBase[Product, ProductCreate, ProductUpdate]):
         product = super().update(db=db, db_obj=db_product, obj_in=product_in)
         if isinstance(product_in, dict):
             images = product_in.get("product_images", [])
-            images = [ProductImageBase(**image) for image in images]
+            images = [ProductImageUpdate(**image) for image in images]
         else:
             images = product_in.product_images
         # since we allow to delete images and/or add new image to

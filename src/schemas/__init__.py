@@ -16,5 +16,5 @@ from schemas.order import (
     OrderProductUpdate,
     OrderUpdate,
 )
-from schemas.product import Product, ProductCreate, ProductImageBase, ProductUpdate
+from schemas.product import Product, ProductCreate, ProductImageBase, ProductImageUpdate, ProductUpdate
 from schemas.user import User, UserCreate, UserUpdate
