@@ -69,6 +69,11 @@ async def create_product(
     return product
 
 
+@router.get('/{product_id}', response_model=schemas.Product)
+async def read_product(*, db: Session = Depends(get_db), product_id: int):
+    product_obj = crud.product.get(db=db, id=product_id)
+    return product_obj
+
 @router.put(
     "/{product_id}",
     response_model=schemas.Product,
