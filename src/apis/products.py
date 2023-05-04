@@ -72,6 +72,10 @@ async def create_product(
 @router.get('/{product_id}', response_model=schemas.Product)
 async def read_product(*, db: Session = Depends(get_db), product_id: int):
     product_obj = crud.product.get(db=db, id=product_id)
+    if not product_obj:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Khong ton tai san pham nay"
+        )
     return product_obj
 
 @router.put(
