@@ -42,7 +42,10 @@ async def register(
     db: Session = Depends(get_db),
     *,
     email: EmailStr = Body(...),
-    password: str = Body(...)
+    password: str = Body(...),
+    fullname: str = Body(...),
+    phone_number: str = Body(...),
+    address: str = Body(...),
 ) -> Any:
     """Register API"""
     stmt = select(User).where(User.email == email)
@@ -58,7 +61,12 @@ async def register(
             detail="Mật khẩu phải có ít nhất 8 kí tự, bao gồm 1 chữ hoa, 1 chữ thường, 1 chữ số, 1 kí tự đặc biệt",
         )
     user_in = schemas.UserCreate(
-        email=email, password=password, is_admin=False
+        email=email,
+        password=password,
+        is_admin=False,
+        fullname=fullname,
+        phone_number=phone_number,
+        address=address,
     )
     user = crud.user.create(db=db, obj_in=user_in)
     return user

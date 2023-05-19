@@ -20,7 +20,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         if keyword:
             stmt = stmt.where(User.fullname.icontains(keyword))
         return stmt
-    
+
     def get_by_email(self, db: Session, email: str) -> User | None:
         stmt = select(User).where(User.email == email)
         user = db.scalar(stmt)
@@ -31,6 +31,9 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             email=obj_in.email,
             hashed_password=get_password_hash(obj_in.password),
             is_admin=obj_in.is_admin,
+            fullname=obj_in.fullname,
+            phone_number=obj_in.phone_number,
+            address=obj_in.address,
         )
         db.add(db_obj)
         db.commit()
@@ -54,9 +57,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         user = self.get_by_email(db=db, email=email)
         email = EmailStr(email)
         if not user:
-            user_in = UserCreate(
-                email=email, password=password, is_admin=True
-            )
+            user_in = UserCreate(email=email, password=password, is_admin=True)
             user = self.create(db=db, obj_in=user_in)
         return user
 

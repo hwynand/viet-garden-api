@@ -17,6 +17,9 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
     is_admin: bool
+    fullname: str
+    phone_number: str
+    address: str
 
 
 class UserUpdate(UserBase):
@@ -24,10 +27,11 @@ class UserUpdate(UserBase):
 
     password: str | None
 
+
 class User(UserBase):
     """Properties to return via API"""
+
     id: int | None
-    
+
     class Config:
         orm_mode = True
-
