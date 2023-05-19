@@ -21,7 +21,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return item
 
     def get_multi(self, db: Session) -> Select[tuple[ModelType]]:
-        query = select(self.model)
+        query = select(self.model).order_by(self.model.created_at.desc())
         return query
 
     def create(self, db: Session, obj_in: CreateSchemaType) -> ModelType:
